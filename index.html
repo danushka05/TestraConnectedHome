@@ -1,0 +1,342 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <title>Connected Home Simulator for Tesltra Prototype Challenge</title>
+	  <!-- refering styles for the simulator interface-->
+      <link href="styles/simulator.css" type="text/css" rel="stylesheet" />
+   </head>
+   <body>
+      <div id="mainContainer" align="center">
+      <div align="center" style="width:1280px; margin:auto;">
+      <div style="width:100%; border:1px solid #52555d; border-radius:4px; position:relative;" align="center">
+         <!--Top yellow bar-->
+         <div id="topContainerYellowbar">
+            <span id="LoginName" class="showValues"></span>
+            <div id="topContainerLogo">
+               <img src="images/logo.png" />
+            </div>
+         </div>
+         <div id="ContentContainer">
+		 <!--Login Page description-->
+            <div align="left" style="width:1000px; margin:auto; position:relative; margin-top:100px; padding:10px;" id="validID">
+               <input type=textbox name=textbox id=textbox placeholder="Insert Name" required style="width:100px;"/><br />
+               <br />
+               <input type=submit name=button value="Login" class="yellowButton"  onclick="myFunction()"/>
+			   <p><b>Connected Home Simulator is based on MQTT protocol has been developed for Telstra Prototype Challenge</b></p>
+			   <p><b>To start the simulation, please do following;</b></p>
+			   
+			   <p>1. Enter a user name and press submit</p>
+			   <p>2. Hover the mouse curser to sensor locations in the model house</p>
+			   <p>3. Enter a desired sensor value and press SEND EVENT, this will send the MQTT messages to IBM Bluemix IoT platform</p>
+			   <p>4. Same data can be see in the cloud side dashboard from here <a href="https://connectedhomeiotchallange.mybluemix.net/ui/#/0">-Connectd Home Dashboard</a> </p>
+               <p>5. When you press SEND EVENT, above cloud side dashboard indicators ( guages and data lables for each sensor)get updated in real time </p>
+			   <p>NOTE: If you don't see 6 guages in the landing page after clicking above link, please click the hamburg menu and go to next page (Histotical Data Page), then nevigate back to landing page. Please repeat this until you see 6 guages</p>
+			   <div id="text" class="showValues"></div>
+            </div>
+			
+			<!--Model house with sensors to be simulated-->
+            <div id="leftColumn">
+               <div class="leftcolumnBg" style="display:none;" id="leftcolumnBgdiv">
+                  <br />
+                  <br />
+                  <br /><br />
+                  <img src="images/house.png" />
+                  <br />
+                  <br />
+                  <br />
+                  <br />
+               </div>
+			   <!--show the right panel when hover-->
+               <div id="d1" onmouseover="show(this,ds1);" class="hitPoint" style="display:none;"></div>
+               <div id="d2" onmouseover="show(this,ds2);" class="hitPoint" style="display:none;"></div>
+               <div id="d3" onmouseover="show(this,ds3);" class="hitPoint" style="display:none;"></div>
+               <div id="d4" onmouseover="show(this,ds4);" class="hitPoint" style="display:none;"></div>
+               <div id="d5" onmouseover="show(this,ds5);" class="hitPoint" style="display:none;"></div>
+               <div id="d6" onmouseover="show(this,ds6);" class="hitPoint" style="display:none;"></div>
+            </div>
+            <!--Right Column-->
+            <div id="rightColumn">
+               <div id="detailsContainerdiv" class="detailsContainer" style="display:none;">
+                  Enter Data
+                  <div class="detailsBorder">
+                     <img src="images/details-border.png" />
+                  </div>
+                  <div id="detailsContent" >
+				  
+				  <!--Gathering Sensor Data-->
+                     <!--Room Condition Monitoring-->
+                     <div id="ds1" class="submenu" style="display: none;">
+                        <div class="detailsHeading">Room Condition</div>
+                        <br />
+                        <br />
+                        <table width="300" border="0" cellspacing="10" cellpadding="0">
+                           <tr>
+                              <td><label>Temperature:</label>&nbsp;</td>
+                              <td width="68%"><label for="roomTemperature"></label>
+                                 <input id="roomTemperature" name="roomTemperature" type="text" id="roomTemperature" value="24" maxlength="3" /><label class="units">degree C</label>
+                              </td>
+                           </tr>
+                           <tr>
+                              <td><label>Humidity:</label>&nbsp;</td>
+                              <td width="68%"><label for="roomHumidity"></label>
+                                 <input id="roomHumidity" name="roomHumidity" type="text" id="roomHumidity" value="67" /><label class="units">%</label>
+                              </td>
+                           </tr>
+                           <tr>
+                              <td><label>Presure:</label>&nbsp;</td>
+                              <td width="68%"><label for="roomPressure"></label>
+                                 <input id="roomPressure" name="roomPressure" type="text" id="roomPressure" value="1026"  /><label class="units">Hgmm</label>
+                              </td>
+                           </tr>
+                           <tr>
+                              <td><label>Air Quality (CO2):</label>&nbsp;</td>
+                              <td width="68%"><label for="roomAirQuality"></label>
+                                 <input id="roomAirQuality" name="roomAirQuality" type="text" id="roomAirQuality" value="3" /><label class="units">%</label>
+                              </td>
+                           </tr>
+                           <tr>
+                              <td height="70" colspan="3" align="left" valign="middle"><input type="submit" name="sendevent" id="sendevent" value="Send Events" class="yellowButton" onclick="callRCfunc()"/></td>
+                           </tr>
+                        </table>
+                     </div>
+                     <!--SmartTV-->
+                     <div id="ds2" class="submenu" style="display: none">
+                        <!--<img src="images/xxx.png" style="float:left; position:relative;" />-->
+                        <div class="detailsHeading">Smart TV</div>
+                        <br />
+                        <br />
+                        <table width="300" border="0" cellspacing="10" cellpadding="0">
+                           <tr>
+                              <td><label>Status ON/OFF:</label>&nbsp;</td>
+                              <td width="68%"><label for="statusTV"></label>
+                                 <input id="statusTV" name="statusTV" type="text" value="ON" />
+                              </td>
+                           </tr>
+                           <tr>
+                              <td height="70" colspan="3" align="left" valign="middle"><input type="submit" name="sendevent" id="sendevent" value="Send Events" class="yellowButton" onclick ="callSmartTVFunc()"/></td>
+                           </tr>
+                        </table>
+                     </div>
+                     <!--SmartAC-->
+                     <div id="ds3" class="submenu" style="display: none">
+                        <!--<img src="images/bbb.png" style="float:left; position:relative;" />-->
+                        <div class="detailsHeading">Smat AC</div>
+                        <br />
+                        <br />
+                        <table width="300" border="0" cellspacing="10" cellpadding="0">
+                           <tr>
+                              <td><label>statusAC ON/OFF:</label>&nbsp;</td>
+                              <td width="68%"><label for="statusAC"></label>
+                                 <input id="statusAC" name="statusAC" type="text" value="ON" />
+                              </td>
+                           </tr>
+                           <tr>
+                              <td><label>Fan Mode:</label>&nbsp;</td>
+                              <td width="68%"><label for="fanMode"></label>
+                                 <input id="fanMode" name="fanMode" type="text" value="Swing" />
+                              </td>
+                           </tr>
+                           <tr>
+                              <td><label>Temperature:</label>&nbsp;</td>
+                              <td width="68%"><label for="setTemp"></label>
+                                 <input id="setTemp" name="setTemp" type="text" value="23" /><label class="units">degree C</label>
+                              </td>
+                           </tr>
+                           <tr>
+                              <td height="70" colspan="3" align="left" valign="middle"><input type="submit" name="sendevent" id="sendevent" value="Send Events" class="yellowButton" onclick="callSmartACFunc()" /></td>
+                           </tr>
+                        </table>
+                     </div>
+                     <!--Electric Kettle-->
+                     <div id="ds4" class="submenu" style="display: none">
+                        <!--<img src="images/kettle.png" style="float:left; position:relative;" />-->
+                        <div class="detailsHeading">Kettle</div>
+                        <br />
+                        <br />
+                        <table width="300" border="0" cellspacing="10" cellpadding="0">
+                           <tr>
+                              <td><label>Status ON/OFF:</label>&nbsp;</td>
+                              <td width="68%"><label for="statusKet"></label>
+                                 <input id="statusKet" name="statusKet" type="text" value="ON" />
+                              </td>
+                           </tr>
+						   <tr>
+                              <td><label>Temperature:</label>&nbsp;</td>
+                              <td width="68%"><label for="tempKet"></label>
+                                 <input id="tempKet" name="tempKet" type="text" value="100" /><label class="units"> degrees C</label>
+                              </td>
+                           </tr>
+                           <tr>
+                              <td height="70" colspan="3" align="left" valign="middle"><input type="submit" name="sendevent" id="sendevent" value="Send Events" class="yellowButton" onclick="callEKFunc()"/></td>
+                           </tr>
+                        </table>
+                     </div>
+                     <!--Home Security COntroller-->
+                     <div id="ds5" class="submenu" style="display: none">
+                        <!--<img src="images/nn.png" style="float:left; position:relative; top:7px;" />-->
+                        <div class="detailsHeading">Home Security System</div>
+                        <br />
+                        <br />
+                        <table width="300" border="0" cellspacing="10" cellpadding="0">
+                           <tr>
+                              <td><label>Healthiness:</label>&nbsp;</td>
+                              <td width="68%"><label for="healthStatus"></label>
+                                 <input id="healthStatus" name="healthStatus" type="text" style="width:75px" value="Healthy" />
+                              </td>
+                           </tr>
+						   <tr>
+                              <td><label>Intruders:</label>&nbsp;</td>
+                              <td width="68%"><label for="intruDetect"></label>
+                                 <input id="intruDetect" name="intruDetect" type="text" style="width:75px" value="negative" />
+                              </td>
+                           </tr>
+                           <tr>
+                              <td height="70" colspan="3" align="left" valign="middle"><input type="submit" name="sendevent" id="sendevent" value="Send Events" class="yellowButton" onclick="callSecurityFunc()" /></td>
+                           </tr>
+                        </table>
+                     </div>
+
+                     <!--Controlable Light-->
+                     <div id="ds6" class="submenu" style="display: none">
+                        <!--<img src="images/gps.png" style="float:left; position:relative; width:24px; height:24px;" />-->
+                        <div class="detailsHeading">Controlable Light</div>
+                        <br />
+                        <br />
+                        <table width="300" border="0" cellspacing="10" cellpadding="0">
+                           <tr>
+                              <td><label>Status ON/OFF:</label>&nbsp;</td>
+                              <td width="68%"><label for="statusLight"></label>
+                                 <input id="statusLight" name="statusLight" type="text" style="width:75px" value="ON" />
+                              </td>
+                           </tr>
+                           <tr>
+                              <td><label>Iluminocity:</label>&nbsp;</td>
+                              <td width="68%"><label for="roomIluminocity"></label>
+                                 <input id="roomIluminocity" name="roomIluminocity" type="text" style="width:75px" value="77.64" /><label class="units">Lux</label>
+                              </td>
+                           </tr>
+                           <tr>
+                              <td height="70" colspan="3" align="left" valign="middle"><input type="submit" name="sendevent" id="sendevent" value="Send Events" class="yellowButton" onclick="callLightContFunc()" /></td>
+                           </tr>
+                        </table>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+      </div>
+ 
+      <script src="js/realtime.js" type="text/javascript"></script>
+      <script src="js/mqttws31.js" type="text/javascript"></script>
+      <script type="text/javascript">
+          var cm = null;
+			//Javascript fucntions
+          var realtime = new Realtime();
+
+          function getPos(el, sProp) {
+              var iPos = 0
+              while (el != null) {
+                  iPos += el["offset" + sProp]
+                  el = el.offsetParent
+              }
+              return iPos
+
+          }
+
+          function show(el, m) {
+            if (m) {
+                m.style.display = '';
+                m.style.pixelLeft = getPos(el, "Left")
+                m.style.pixelTop = getPos(el, "Top") + el.offsetHeight
+            }
+            if ((m != cm) && (cm)) cm.style.display = 'none'
+            cm = m
+          }
+			// Constructing JSON documents for sensor values
+          function callSmartTVFunc() {
+              var jsonObj = buildJson();
+			  jsonObj.d.deviceID = "SamsungSmartTV001";
+			  jsonObj.d.timestamp = Date.now();
+              jsonObj.d.StatusTV = document.getElementById("statusTV").value;
+              realtime.publish(jsonObj, "SmartTV");
+          }
+
+          function callEKFunc() {
+              var jsonObj = buildJson();
+			  jsonObj.d.deviceID = "SonyKettle001";
+			  jsonObj.d.timestamp = Date.now();
+              jsonObj.d.statusKet = document.getElementById("statusKet").value;
+			  jsonObj.d.tempKet = document.getElementById("tempKet").value;
+              realtime.publish(jsonObj, "ElectricKettle");
+          }
+
+          function callSecurityFunc() {
+              var jsonObj = buildJson();
+			  jsonObj.d.deviceID = "CCTVmonitor001";
+			  jsonObj.d.timestamp = Date.now();
+              jsonObj.d.healthStatus = document.getElementById("healthStatus").value;
+			  jsonObj.d.intruDetect = document.getElementById("intruDetect").value;
+              realtime.publish(jsonObj, "SecuritySystem");
+          }
+
+          function callSmartACFunc() {
+              var jsonObj = buildJson();
+			  jsonObj.d.deviceID = "SamsungSmartAC001";
+			  jsonObj.d.timestamp = Date.now();
+              jsonObj.d.statusAC = document.getElementById("statusAC").value;
+              jsonObj.d.fanMode = document.getElementById("fanMode").value;
+              jsonObj.d.setTemp = document.getElementById("setTemp").value;
+              
+              realtime.publish(jsonObj, "SmartAC");
+          }
+
+          function callRCfunc() {
+              var jsonObj = buildJson();
+			  jsonObj.d.deviceID = "IoTCondiMonitor001";
+			  jsonObj.d.timestamp = Date.now();
+              jsonObj.d.roomHumidity = document.getElementById("roomHumidity").value;
+              jsonObj.d.roomTemperature = document.getElementById("roomTemperature").value;
+              jsonObj.d.roomHumidity = document.getElementById("roomHumidity").value;
+              jsonObj.d.roomPressure = document.getElementById("roomPressure").value;
+              jsonObj.d.roomAirQuality = document.getElementById("roomAirQuality").value;
+
+              realtime.publish(jsonObj, "RoomCondition");
+          }
+
+          function callLightContFunc() {
+              var jsonObj = buildJson();
+			  jsonObj.d.deviceID = "PhillipHueLight001";
+			  jsonObj.d.timestamp = Date.now();
+              jsonObj.d.statusLight = document.getElementById("statusLight").value;
+              jsonObj.d.roomIluminocity = document.getElementById("roomIluminocity").value;
+
+              realtime.publish(jsonObj, "ControlableLight");
+          }
+		  
+
+          function buildJson() {
+              var jsonObj = {};
+              jsonObj.d = {};
+              return jsonObj;
+          }
+			
+			<!-- function for calling elements by ID
+          function myFunction() {
+              if(document.getElementById("textbox").value) {
+                document.getElementById("validID").style.display = "none";
+                document.getElementById("leftcolumnBgdiv").style.display = "";
+                document.getElementById("d1").style.display = "";
+                document.getElementById("d2").style.display = "";
+                document.getElementById("d3").style.display = "";
+                document.getElementById("d4").style.display = "";
+                document.getElementById("d5").style.display = "";
+                document.getElementById("d6").style.display = "";
+                document.getElementById("detailsContainerdiv").style.display = "";
+                document.getElementById("LoginName").innerHTML = "Welcome : " + document.getElementById("textbox").value;
+              }
+          }
+
+      </script>
+   </body>
+</html>
